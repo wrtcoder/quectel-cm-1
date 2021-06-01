@@ -162,9 +162,9 @@ void udhcpc_start(PROFILE_T *profile)
             snprintf(udhcpc_cmd, sizeof(udhcpc_cmd), "dhclient -4 -d --no-pid %s", ifname);
             dhclient_alive++;
 #else
-            if (access("./default.script", X_OK))
+            if (access(" /usr/share/udhcpc/default.script", X_OK))
             {
-                dbg_time("Fail to access ./default.script, errno: %d (%s)", errno, strerror(errno));
+                dbg_time("Fail to access /usr/share/udhcpc/default.script, errno: %d (%s)", errno, strerror(errno));
             }
 
             //-f,--foreground    Run in foreground
@@ -172,7 +172,7 @@ void udhcpc_start(PROFILE_T *profile)
             //-n,--now        Exit if lease is not obtained
             //-q,--quit        Exit after obtaining lease
             //-t,--retries N        Send up to N discover packets (default 3)
-            snprintf(udhcpc_cmd, sizeof(udhcpc_cmd), "busybox udhcpc -f -n -q -t 5 -i %s -s ./default.script", ifname);
+            snprintf(udhcpc_cmd, sizeof(udhcpc_cmd), "busybox udhcpc -f -n -q -t 5 -i %s -s /usr/share/udhcpc/default.script", ifname);
 #endif
 
             pthread_create(&udhcpc_thread_id, &udhcpc_thread_attr, udhcpc_thread_function, (void *)strdup(udhcpc_cmd));
